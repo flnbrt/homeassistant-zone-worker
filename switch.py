@@ -5,7 +5,7 @@ from homeassistant.core import callback
 from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.helpers.entity_registry import async_get as async_get_entity_registry
 from homeassistant.const import STATE_ON
-from .const import DOMAIN
+#from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
