@@ -1,0 +1,24 @@
+{
+    "title": "Zone Worker",
+    "config": {
+        "flow_title": "Zone Worker",
+        "step": {
+            "user": {
+                "data": {
+                    "include_area": "Area to track it's entities",
+                    "include_domains": "Domains to track in given area"
+                }
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "include_area": "Area to track it's entities",
+                    "include_domains": "Domains to track in given area"
+                }
+            }
+        }
+    }
+}
