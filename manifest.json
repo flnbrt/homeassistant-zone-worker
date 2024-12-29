@@ -5,5 +5,6 @@
     "documentation": "https://www.github.com/flnbrt/homeassistant-zone-worker",
     "dependencies": [],
     "codeowners": ["@flnbrt"],
-    "requirements": []
+    "requirements": [],
+    "config_flow": true
 }
