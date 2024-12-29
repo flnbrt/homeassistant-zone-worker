@@ -4,10 +4,6 @@ from homeassistant.core import callback
 import voluptuous as vol
 from homeassistant.helpers import config_validation as cv  # Config validation helpers
 from .const import DOMAIN
-import logging
-
-# Define the logger instance
-_LOGGER = logging.getLogger(__name__)
 
 class ZoneWorkerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Zone Worker."""
@@ -15,24 +11,21 @@ class ZoneWorkerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     async def async_step_user(self, user_input=None):
-        """Handle the initial step of the config flow."""
-        errors = {}
-
+        """Handle the initial step."""
         if user_input is not None:
-            # Log the user input for debugging purposes
-            _LOGGER.debug("User input received in config flow: %s", user_input)
+            # Create entry with the provided input
+            return self.async_create_entry(title=user_input["room_name"], data=user_input)
 
-            # Create the config entry
-            return self.async_create_entry(title=user_input["room"], data=user_input)
-
-        # Define the configuration schema
-        schema = vol.Schema({
-            vol.Required("room", default="Living Room"): str,
-            vol.Required("domains", default=["light", "switch"]): vol.All(cv.ensure_list, [str]),
-            vol.Optional("include", default=[]): vol.All(cv.ensure_list, [str]),
-            vol.Optional("exclude", default=[]): vol.All(cv.ensure_list, [str]),
-        })
-        return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
+        # Schema for user input
+        schema = vol.Schema(
+            {
+                vol.Required("room_name"): str,
+                vol.Required("domains", default="light,switch"): str,  # Accept as comma-separated string
+                vol.Optional("include_entities", default=""): str,  # Accept as comma-separated string
+                vol.Optional("exclude_entities", default=""): str,  # Accept as comma-separated string
+            }
+        )
+        return self.async_show_form(step_id="user", data_schema=schema)
 
     @staticmethod
     @callback
