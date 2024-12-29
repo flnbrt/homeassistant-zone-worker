@@ -4,6 +4,10 @@ from homeassistant.core import callback
 import voluptuous as vol
 from homeassistant.helpers import config_validation as cv  # Config validation helpers
 from .const import DOMAIN
+import logging
+
+# Define the logger instance
+_LOGGER = logging.getLogger(__name__)
 
 class ZoneWorkerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Zone Worker."""

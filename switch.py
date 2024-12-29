@@ -18,6 +18,10 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     include_entities = config_entry.data["include_entities"].split(",") if config_entry.data["include_entities"] else []
     exclude_entities = config_entry.data["exclude_entities"].split(",") if config_entry.data["exclude_entities"] else []
 
+    # Debug log to show which entities will be added
+    _LOGGER.debug(f"Entities to include: {include_entities}")
+    _LOGGER.debug(f"Entities to exclude: {exclude_entities}")
+
     async_add_entities(
         [
             ZoneWorkerSwitch(
@@ -62,11 +66,19 @@ class ZoneWorkerSwitch(SwitchEntity):
             ):
                 entities.append(entity_id)
 
+                # Debug log to show which entities will be added
+                _LOGGER.debug(f"Added entity {entity_id} to switch.")
+
         # Explicitly include entities, even if they don't match other criteria
         if self._include_entities:
             for entity in self._include_entities:
                 if entity not in entities:
                     entities.append(entity)
+                    # Debug log to show which entities will be added
+                    _LOGGER.debug(f"Explicitly included entity {entity}.")
+
+        # Debug: Log all gathered entities
+        _LOGGER.debug(f"Final list of entities: {entities}")
 
         return entities
 
