@@ -1,0 +1,17 @@
+{
+    "config": {
+      "step": {
+        "user": {
+          "title": "Configure Zone Worker",
+          "description": "Set up a Zone Worker for a specific room.",
+          "data": {
+            "room_name": "Room Name",
+            "domains": "Entity Domains",
+            "include_entities": "Explicit Include Entities",
+            "exclude_entities": "Explicit Exclude Entities"
+          }
+        }
+      }
+    }
+  }
+  

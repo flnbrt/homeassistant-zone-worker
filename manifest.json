@@ -1,12 +1,9 @@
 {
     "domain": "zone_worker",
     "name": "Zone Worker",
+    "version": "0.1.0",
     "documentation": "https://www.github.com/flnbrt/homeassistant-zone-worker",
     "dependencies": [],
     "codeowners": ["@flnbrt"],
-    "requirements": [],
-    "iot_class": "local_polling",
-    "config_flow": true,
-    "integration_type": "hub",
-    "version": "0.1.0"
+    "requirements": []
 }
