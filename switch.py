@@ -57,32 +57,24 @@ class ZoneWorkerSwitch(SwitchEntity):
         """Gather all relevant entities based on room, domains, includes, and excludes."""
         entities = []
 
-        # Iterate through the list of states
+        # Iteriere durch alle States und prüfe, ob sie in den angegebenen Raum und Domänen passen
         for state in self.hass.states.async_all():
             entity_id = state.entity_id
-            domain = entity_id.split(".")[0]  # Extract the domain
+            domain = entity_id.split(".")[0]  # Extrahiere die Domäne
 
-            # Filter by room (if applicable), domains, and explicit includes/excludes
+            # Füge Entitäten hinzu, die im Raum sind und zu einer der angegebenen Domänen gehören
             if (
-                (not self._room_name or self._room_name in entity_id)
-                and (not self._domains or domain in self._domains)
-                and (not self._exclude_entities or entity_id not in self._exclude_entities)
+                (not self._room_name or self._room_name in state.attributes.get("area_id", ""))
+                and (domain in self._domains)  # Füge die Entität hinzu, wenn ihre Domäne angegeben ist
+                and (not self._exclude_entities or entity_id not in self._exclude_entities)  # Ausschließen nach Bedarf
             ):
                 entities.append(entity_id)
 
-                # Debug log to show which entities will be added
-                _LOGGER.debug(f"Added entity {entity_id} to switch.")
-
-        # Explicitly include entities, even if they don't match other criteria
+        # Explizite Einschlüsse vornehmen, auch wenn sie nicht zu den oben genannten Kriterien passen
         if self._include_entities:
             for entity in self._include_entities:
                 if entity not in entities:
                     entities.append(entity)
-                    # Debug log to show which entities will be added
-                    _LOGGER.debug(f"Explicitly included entity {entity}.")
-
-        # Debug: Log all gathered entities
-        _LOGGER.debug(f"Final list of entities: {entities}")
 
         return entities
 
