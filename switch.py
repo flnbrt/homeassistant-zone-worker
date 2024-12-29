@@ -4,10 +4,16 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 from typing import List
+import logging
+
+# Define the logger instance
+_LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: AddEntitiesCallback):
     """Set up the Zone Worker switches from a config entry."""
-    room_name = config_entry.data["room"]
+    _LOGGER.debug("Config entry data: %s", config_entry.data)
+
+    room_name = config_entry.data.get("room", "Default Room")
     domains = config_entry.data.get("domains", [])
     include_entities = config_entry.data.get("include", [])
     exclude_entities = config_entry.data.get("exclude", [])
