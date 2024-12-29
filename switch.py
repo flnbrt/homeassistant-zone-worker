@@ -1,3 +1,30 @@
+from homeassistant.components.switch import SwitchEntity
+from homeassistant.helpers.entity import EntityCategory
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.config_entries import ConfigEntry
+from typing import List
+
+async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: AddEntitiesCallback):
+    """Set up the Zone Worker switches from a config entry."""
+    room_name = config_entry.data["room"]
+    domains = config_entry.data.get("domains", [])
+    include_entities = config_entry.data.get("include", [])
+    exclude_entities = config_entry.data.get("exclude", [])
+
+    async_add_entities(
+        [
+            ZoneWorkerSwitch(
+                hass,
+                f"Zone Worker {room_name}",
+                room_name,
+                domains,
+                include_entities,
+                exclude_entities,
+            )
+        ]
+    )
+
 class ZoneWorkerSwitch(SwitchEntity):
     """Representation of a Zone Worker switch."""
 
