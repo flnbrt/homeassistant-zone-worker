@@ -1,21 +1,3 @@
-import logging
-from homeassistant.components.switch import SwitchEntity
-
-_LOGGER = logging.getLogger(__name__)
-
-async def async_setup_entry(hass, config_entry, async_add_entities):
-    """Set up Zone Worker switches from a config entry."""
-    config = config_entry.data
-    room_name = config.get("room_name")
-    domains = config.get("domains", [])
-    include_entities = config.get("include_entities", [])
-    exclude_entities = config.get("exclude_entities", [])
-
-    async_add_entities([
-        ZoneWorkerSwitch(hass, f"Zone Worker {room_name}", room_name, domains, include_entities, exclude_entities)
-    ])
-
-
 class ZoneWorkerSwitch(SwitchEntity):
     """Representation of a Zone Worker switch."""
 
@@ -78,5 +60,6 @@ class ZoneWorkerSwitch(SwitchEntity):
     async def async_update(self):
         """Fetch new state data for the switch."""
         self._is_on = any(
-            self.hass.states.get(entity).state == "on" for entity in self._entities
+            self.hass.states.get(entity) is not None and self.hass.states.get(entity).state == "on"
+            for entity in self._entities
         )
