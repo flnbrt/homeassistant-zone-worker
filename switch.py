@@ -18,7 +18,6 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     include_entities = config_entry.data["include_entities"].split(",") if config_entry.data["include_entities"] else []
     exclude_entities = config_entry.data["exclude_entities"].split(",") if config_entry.data["exclude_entities"] else []
 
-    # Debug log to show which entities will be added
     _LOGGER.debug(f"Entities to include: {include_entities}")
     _LOGGER.debug(f"Entities to exclude: {exclude_entities}")
 
@@ -34,6 +33,8 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
             )
         ]
     )
+
+    _LOGGER.debug("Entities added to async_add_entities.")
 
 class ZoneWorkerSwitch(SwitchEntity):
     """Representation of a Zone Worker switch."""
@@ -94,17 +95,21 @@ class ZoneWorkerSwitch(SwitchEntity):
 
     async def async_turn_on(self, **kwargs):
         """Turn the switch on."""
+        _LOGGER.debug(f"Turning on switch: {self._name}")
         self._is_on = True
         self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs):
         """Turn the switch off."""
+        _LOGGER.debug(f"Turning off switch: {self._name}")
         self._is_on = False
         self.async_write_ha_state()
 
     async def async_update(self):
         """Fetch new state data for the switch."""
+        _LOGGER.debug(f"Updating state for {self._name}")
         self._is_on = any(
             self.hass.states.get(entity) is not None and self.hass.states.get(entity).state == "on"
             for entity in self._entities
         )
+        _LOGGER.debug(f"Switch state for {self._name}: {self._is_on}")
