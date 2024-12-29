@@ -50,6 +50,9 @@ class ZoneWorkerSwitch(SwitchEntity):
         self._entities = self._gather_entities()
         self._is_on = False
 
+        # Set a unique entity ID (e.g., zone_worker_wohnzimmer)
+        self.entity_id = f"switch.zone_worker_{room_name.lower().replace(' ', '_')}"
+
     def _gather_entities(self):
         """Gather all relevant entities based on room, domains, includes, and excludes."""
         entities = []
