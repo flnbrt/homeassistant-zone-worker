@@ -1,7 +1,7 @@
-"""Config flow for Zone Worker integration."""
 from homeassistant import config_entries
 from homeassistant.core import callback
 import voluptuous as vol
+from homeassistant.helpers import config_validation as cv 
 from .const import DOMAIN
 
 class ZoneWorkerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -19,9 +19,9 @@ class ZoneWorkerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         schema = vol.Schema(
             {
                 vol.Required("room_name"): str,
-                vol.Required("domains", default=["light", "switch"]): vol.All(vol.ensure_list, [str]),
-                vol.Optional("include_entities", default=[]): vol.All(vol.ensure_list, [str]),
-                vol.Optional("exclude_entities", default=[]): vol.All(vol.ensure_list, [str]),
+                vol.Required("domains", default=["light", "switch"]): vol.All(cv.ensure_list, [str]),
+                vol.Optional("include_entities", default=[]): vol.All(cv.ensure_list, [str]),
+                vol.Optional("exclude_entities", default=[]): vol.All(cv.ensure_list, [str]),
             }
         )
         return self.async_show_form(step_id="user", data_schema=schema)
@@ -50,11 +50,11 @@ class ZoneWorkerOptionsFlow(config_entries.OptionsFlow):
         schema = vol.Schema(
             {
                 vol.Required("domains", default=self.config_entry.options.get("domains", ["light", "switch"])):
-                    vol.All(vol.ensure_list, [str]),
+                    vol.All(cv.ensure_list, [str]),
                 vol.Optional("include_entities", default=self.config_entry.options.get("include_entities", [])):
-                    vol.All(vol.ensure_list, [str]),
+                    vol.All(cv.ensure_list, [str]),
                 vol.Optional("exclude_entities", default=self.config_entry.options.get("exclude_entities", [])):
-                    vol.All(vol.ensure_list, [str]),
+                    vol.All(cv.ensure_list, [str]),
             }
         )
         return self.async_show_form(step_id="init", data_schema=schema)
