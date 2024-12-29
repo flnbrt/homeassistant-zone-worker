@@ -9,14 +9,14 @@ import logging
 # Define the logger instance
 _LOGGER = logging.getLogger(__name__)
 
-async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: AddEntitiesCallback):
+async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the Zone Worker switches from a config entry."""
-    _LOGGER.debug("Config entry data: %s", config_entry.data)
+    _LOGGER.info("Setting up Zone Worker entry: %s", config_entry.data)
 
-    room_name = config_entry.data.get("room", "Default Room")
-    domains = config_entry.data.get("domains", [])
-    include_entities = config_entry.data.get("include", [])
-    exclude_entities = config_entry.data.get("exclude", [])
+    room_name = config_entry.data["room_name"]
+    domains = config_entry.data["domains"].split(",")
+    include_entities = config_entry.data["include_entities"].split(",") if config_entry.data["include_entities"] else []
+    exclude_entities = config_entry.data["exclude_entities"].split(",") if config_entry.data["exclude_entities"] else []
 
     async_add_entities(
         [
